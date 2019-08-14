@@ -1,0 +1,29 @@
+// Auth reducer types
+export const SET_AUTH_ERRORS = "SET_AUTH_ERRORS";
+export const CLEAR_AUTH_ERRORS = "CLEAR_AUTH_ERRORS";
+export const TOGLE_LOADING_AUTH = "TOGLE_LOADING_AUTH";
+export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
+export const SET_UNAUTHENTICATED = "SET_UNAUTHENTICATED";
+
+// User reducer types
+export const TOGLE_LOADING_USERDATA = "TOGLE_LOADING_USERDATA";
+export const SET_USER = "SET_USER";
+export const MARK_NOTIFICATION_READ = "MARK_NOTIFICATIONS_READ";
+
+// ScreamDialog reducer types
+export const TOGLE_LOADING_SCREAM = "TOGLE_LOADING_SCREAM";
+export const OPEN_SCREAM_DIALOG = "OPEN_SCREAM_DIALOG";
+export const SET_SCREAM = "SET_SCREAM";
+export const CLEAR_SCREAM = "CLEAR_SCREAM";
+export const CLOSE_SCREAM_DIALOG = "CLOSE_SCREAM_DIALOG";
+
+// Data reducer types
+export const TOGLE_LOADING_PAGE = "TOGLE_LOADING_PAGE";
+export const SET_SCREAMS = "SET_SCREAMS";
+export const SET_AUTHOR = "SET_AUTHOR";
+export const POST_SCREAM = "POST_SCREAM";
+export const LIKE_SCREAM = "LIKE_SCREAM";
+export const UNLIKE_SCREAM = "UNLIKE_SCREAM";
+export const DELETE_SCREAM = "DELETE_SCREAM";
+export const SUBMIT_COMMENT = "SUBMIT_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
