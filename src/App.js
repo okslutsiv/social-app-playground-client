@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 //Redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { logoutUser, getUserData } from "./redux/actions/userActions";
+import { SET_AUTHENTICATED } from "./redux/types";
+
 //MUI
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from "./MUIcustomisation/theme";
@@ -16,21 +20,42 @@ import Home from "./pages/home";
 import User from "./pages/user";
 import SignIn from "./pages/signin";
 import SignUp from "./pages/signup";
-// import Scream from "./pages/scream";
 import NotFound from "./pages/notFound";
 
-//components
+//stuff
 import AuthRoute from "./utils/AuthRoute";
 import NavBar from "./components/navBar";
-import checkAuth from "./utils/checkAuth";
+// import checkAuth, { checkAuthTokenValid } from "./utils/checkAuth";
 import Footer from "./components/footer";
 
 axios.defaults.baseURL =
   "https://europe-west1-social-app-cc043.cloudfunctions.net/api/v1";
 
-checkAuth();
-
 function App() {
+  //start the app
+  useEffect(() => {
+    const token = localStorage.getItem("FBIdToken");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const exp = decodedToken.exp * 1000;
+      const timeToExpire = exp - new Date();
+      if (timeToExpire > 5000) {
+        console.log(
+          `Token will expire in ${(timeToExpire / 60000).toFixed(0)} min`,
+        );
+        store.dispatch({ type: SET_AUTHENTICATED });
+        axios.defaults.headers.common["Authorization"] = token;
+        store.dispatch(getUserData());
+      } else {
+        console.log("Token expired!");
+        store.dispatch(logoutUser());
+        window.location.href = "/signin";
+      }
+    }
+  }, []);
+
+  // track the time to token expiration
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
@@ -46,7 +71,6 @@ function App() {
                   path="/user/:userName/scream/:screamId"
                   component={User}
                 />
-                {/* <Route exact path="/scream/:screamId" component={Scream} /> */}
                 <Route exact path="/user/:userName" component={User} />
                 <Route exact path="/" component={Home} />
                 <Route path="*" component={NotFound} />

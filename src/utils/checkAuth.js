@@ -1,33 +1,31 @@
 import jwtDecode from "jwt-decode";
+import { useEffect } from "react";
+
 import store from "../redux/store";
-import { SET_AUTHENTICATED } from "../redux/types";
-import { logoutUser, getUserData } from "../redux/actions/userActions";
+import { logoutUser } from "../redux/actions/userActions";
 
-import axios from "axios";
-export const checkAuthTokenValid = () => {
-  const token = localStorage.getItem("FBIdToken");
-  if (!token) return null;
-  const decodedToken = jwtDecode(token);
-  let timeToExpire = (decodedToken.exp * 1000 - new Date()) / 60000;
-  if (timeToExpire <= 0) return false;
-  else return true;
-};
+export default function useCheckAuth() {
+  useEffect(() => {
+    const token = localStorage.getItem("FBIdToken");
+    let i = null;
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const timeOfTokenExpire = decodedToken.exp;
 
-export default function checkAuth() {
-  const token = localStorage.getItem("FBIdToken");
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    let timeToExpire = (decodedToken.exp * 1000 - new Date()) / 60000;
-    if (timeToExpire < 0) {
-      console.log(`token expired!`);
+      i = setInterval(() => {
+        const timeLeft = timeOfTokenExpire * 1000 - new Date();
 
-      store.dispatch(logoutUser());
-      window.location.href = "/signin";
-    } else {
-      console.log(`token will expire in ${timeToExpire.toFixed(0)} min`);
-      store.dispatch({ type: SET_AUTHENTICATED });
-      axios.defaults.headers.common["Authorization"] = token;
-      store.dispatch(getUserData());
+        if (timeLeft < 600000 && timeLeft > 60000) {
+          console.log(
+            `Token will expire in ${(timeLeft / 60000).toFixed(0)} min`,
+          );
+        } else if (timeLeft < 60000 ) {
+          console.error(`Token expired!`);
+          store.dispatch(logoutUser());
+          window.location.href = "/signin";
+        }
+      }, 60000);
     }
-  }
+    return () => clearInterval(i);
+  });
 }

@@ -93,15 +93,7 @@ const ScreamCard = props => {
   const { user } = props;
   const classes = useStyles();
   dayjs.extend(relativeTime);
-  // const {
-  //   imageUrl,
-  //   userName,
-  //   body,
-  //   createdAt,
-  //   likesCount,
-  //   screamId,
-  //   commentsCount,
-  // } = scream;
+
   return (
     <Card className={classes.root}>
       <img

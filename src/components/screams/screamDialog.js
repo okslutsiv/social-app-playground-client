@@ -172,9 +172,6 @@ const ScreamDialog = props => {
   }, [screamDialogId]);
 
   const handleClose = history => {
-    console.log("closing dialog");
-    console.log(newPath, oldPath);
-
     window.history.pushState(null, null, oldPath);
     setOldPath(``);
     setNewPath("");
@@ -241,7 +238,7 @@ const ScreamDialog = props => {
         <Tooltip title="Read the scream">
           <IconButton
             size="small"
-            color="secondary"
+            color="primary"
             onClick={handleOpenWithButton}
           >
             <ReadIcon />

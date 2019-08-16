@@ -6,10 +6,7 @@ import {
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   DELETE_SCREAM,
-  SET_UNAUTHENTICATED,
 } from "../types";
-
-import { checkAuthTokenValid } from "../../utils/checkAuth";
 
 import axios from "axios";
 
@@ -51,44 +48,30 @@ export const getUserpageData = userName => dispatch => {
 };
 
 export const likeScream = screamId => dispatch => {
-  //check if the authentication token is valid
-  const validToken = checkAuthTokenValid();
-  if (!validToken) {
-    console.log("Token expired");
-    dispatch({ type: SET_UNAUTHENTICATED });
-  } else {
-    axios
-      .get(`/scream/${screamId}/like`)
-      .then(res => {
-        if (res.status !== 200) throw new Error(res.data.error);
-        dispatch({ type: LIKE_SCREAM, payload: { ...res.data, screamId } });
-      })
+  axios
+    .get(`/scream/${screamId}/like`)
+    .then(res => {
+      if (res.status !== 200) throw new Error(res.data.error);
+      dispatch({ type: LIKE_SCREAM, payload: { ...res.data, screamId } });
+    })
 
-      .catch(err => {
-        console.error(err);
-        console.error("Cannot commit the like");
-      });
-  }
+    .catch(err => {
+      console.error(err);
+      console.error("Cannot commit the like");
+    });
 };
 
 export const unlikeScream = screamId => dispatch => {
-  //check if the authentication token is valid
-  const validToken = checkAuthTokenValid();
-  if (!validToken) {
-    console.log("Token expired");
-    dispatch({ type: SET_UNAUTHENTICATED });
-  } else {
-    axios
-      .get(`/scream/${screamId}/unlike`)
-      .then(res => {
-        if (res.status !== 200) throw new Error(res.data.error);
-        dispatch({ type: UNLIKE_SCREAM, payload: { ...res.data, screamId } });
-      })
-      .catch(err => {
-        console.error(err);
-        console.error("Cannot commit the unlike");
-      });
-  }
+  axios
+    .get(`/scream/${screamId}/unlike`)
+    .then(res => {
+      if (res.status !== 200) throw new Error(res.data.error);
+      dispatch({ type: UNLIKE_SCREAM, payload: { ...res.data, screamId } });
+    })
+    .catch(err => {
+      console.error(err);
+      console.error("Cannot commit the unlike");
+    });
 };
 
 export const deleteScream = screamId => dispatch => {

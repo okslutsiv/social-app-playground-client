@@ -14,7 +14,7 @@ import ScreamList from "../components/screams/screamList";
 import ScreamDialog from "../components/screams/screamDialog";
 import ScreamSkeleton from "../utils/screamSkeleton";
 import Profile from "../components/user/profile";
-// import NotFound from "./notFound";
+import useCheckAuth from "../utils/checkAuth";
 
 const User = props => {
   // props from react-router-dom
@@ -23,6 +23,8 @@ const User = props => {
 
   //props from redux
   const { data, getUserpageData, openScreamDialog, screamDialogId } = props;
+
+  useCheckAuth();
 
   useEffect(() => {
     screamId && openScreamDialog(screamId);
