@@ -12,7 +12,7 @@ import { SET_AUTHENTICATED } from "./redux/types";
 
 //MUI
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import theme from "./MUIcustomisation/theme";
+import theme from "./MUIcustomization/theme";
 import Box from "@material-ui/core/Box";
 
 //pages
@@ -25,7 +25,6 @@ import NotFound from "./pages/notFound";
 //stuff
 import AuthRoute from "./utils/AuthRoute";
 import NavBar from "./components/navBar";
-// import checkAuth, { checkAuthTokenValid } from "./utils/checkAuth";
 import Footer from "./components/footer";
 
 axios.defaults.baseURL =
@@ -53,8 +52,6 @@ function App() {
       }
     }
   }, []);
-
-  // track the time to token expiration
 
   return (
     <Provider store={store}>
